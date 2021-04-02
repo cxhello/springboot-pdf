@@ -1,0 +1,164 @@
+{
+    "processUnitReportDataList": [
+        {
+            "processUnitName": "进水水质",
+            "waterQualityReportDataList": [
+                {
+                    "parameterName": "进水水质COD",
+                    "mode": "平均值",
+                    "value": "514528.0"
+                },
+                {
+                    "parameterName": "进水水质BOD₅",
+                    "mode": "平均值",
+                    "value": "253780.0"
+                },
+                {
+                    "parameterName": "进水水质NH₃-N",
+                    "mode": "平均值",
+                    "value": "81936.0"
+                },
+                {
+                    "parameterName": "进水水质SS",
+                    "mode": "平均值",
+                    "value": "208993.0"
+                },
+                {
+                    "parameterName": "进水水质TP",
+                    "mode": "平均值",
+                    "value": "17091.0"
+                },
+                {
+                    "parameterName": "进水PH",
+                    "mode": "累积值",
+                    "value": "6.965097402597403"
+                }
+            ],
+            "deviceMeterReportDataList": [
+                {
+                    "deviceName": "液压机",
+                    "deviceParameterReportDataList": [
+                        {
+                            "parameterName": "出水累积量",
+                            "mode": "平均值",
+                            "value": "2.1493836E7"
+                        },
+                        {
+                            "parameterName": "出水PH值",
+                            "mode": "平均值",
+                            "value": "60287.0"
+                        }
+                    ]
+                },
+                {
+                    "deviceName": "除尘泵",
+                    "deviceParameterReportDataList": [
+                        {
+                            "parameterName": "处理风量",
+                            "mode": "平均值",
+                            "value": "2.1670122E7"
+                        }
+                    ]
+                }
+            ],
+            "processParameterAlarmReportDataList": [
+                {
+                    "parameterName": "进水水质COD",
+                    "alarmCount": 0
+                },
+                {
+                    "parameterName": "进水水质NH₃-N",
+                    "alarmCount": 1
+                },
+                {
+                    "parameterName": "进水水质SS",
+                    "alarmCount": 1
+                }
+            ],
+            "deviceMeterAlarmReportDataList": [
+                {
+                    "deviceName": "液压机",
+                    "deviceParameterAlarmReportDataList": [
+                        {
+                            "parameterName": "出水累积量",
+                            "alarmCount": 0
+                        },
+                        {
+                            "parameterName": "出水PH值",
+                            "alarmCount": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "processUnitName": "出水水质",
+            "waterQualityReportDataList": [
+                {
+                    "parameterName": "出水水质COD",
+                    "mode": "平均值",
+                    "value": "8370085.0"
+                },
+                {
+                    "parameterName": "出水水质BOD₅",
+                    "mode": "平均值",
+                    "value": "8203844.0"
+                },
+                {
+                    "parameterName": "出水水质NH₃-N",
+                    "mode": "平均值",
+                    "value": "2698109.0"
+                },
+                {
+                    "parameterName": "出水水质SS",
+                    "mode": "平均值",
+                    "value": "8180714.0"
+                },
+                {
+                    "parameterName": "出水水质TP",
+                    "mode": "平均值",
+                    "value": "7524095.0"
+                },
+                {
+                    "parameterName": "出水PH",
+                    "mode": "累积值",
+                    "value": "7.0176211453744495"
+                }
+            ],
+            "deviceMeterReportDataList": [],
+            "processParameterAlarmReportDataList": [],
+            "deviceMeterAlarmReportDataList": []
+        }
+    ],
+    "processEfficiencyReportDataList": [
+        {
+            "processSectionName": "55至出水水质",
+            "processEfficiencyParameterList": [
+                {
+                    "name": "处理效率",
+                    "value": "0.00"
+                }
+            ]
+        },
+        {
+            "processSectionName": "进水水质至出水水质",
+            "processEfficiencyParameterList": [
+                {
+                    "name": "进出水PH",
+                    "value": "-0.01"
+                },
+                {
+                    "name": "进出水COD",
+                    "value": "-15.27"
+                }
+            ]
+        }
+    ],
+    "emissionStandardReportDataList": [
+        {
+            "name": "达标天数",
+            "count": 0
+        }
+    ],
+    "conclusion": "不达标 采用工艺需调整合理，废水处理工程运行不佳，未达到综合一级A排放标准"
+}
