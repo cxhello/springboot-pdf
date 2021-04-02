@@ -4,8 +4,8 @@ import lombok.Data;
 
 /**
  * 水质水量
- * @author caixiaohui
- * @date 2021/3/24
+ * @author cxhello
+ * @date 2021/4/2
  */
 @Data
 public class WaterQualityReportData {

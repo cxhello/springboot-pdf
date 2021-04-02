@@ -10,8 +10,8 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 /**
- * @author caixiaohui
- * @date 2021/3/26
+ * @author cxhello
+ * @date 2021/4/2
  */
 public class WordUtil {
 

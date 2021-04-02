@@ -6,8 +6,8 @@ import java.util.List;
 
 /**
  * 设备仪表报警
- * @author caixiaohui
- * @date 2021/3/24
+ * @author cxhello
+ * @date 2021/4/2
  */
 @Data
 public class DeviceMeterAlarmReportData {
