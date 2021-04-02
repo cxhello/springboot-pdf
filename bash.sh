@@ -1,0 +1,1 @@
+mvn install:install-file -DgroupId=com.aspose -DartifactId=aspose.words -Dversion=15.8 -Dpackaging=jar -Dfile=aspose-words-15.8.0-jdk16.jar
