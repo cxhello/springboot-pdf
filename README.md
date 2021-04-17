@@ -241,7 +241,7 @@ public class ExportController {
 
 在 Linux 服务器使用 aspose.word 转换 word 文件为 pdf 的时候显示中文乱码，但是在 windows 服务器上使用可以正常转换。通过查资料分析后确认是由于 Linux 服务器缺少对应的字库导致文件转换出现乱码的。
 
-安装字库，将 windows 机器的 `c:\Windows\fonts` 目录下的全部文件拷贝到生产服务器字体安装目录下，然后执行以下命令更新字体缓存。
+安装字库，将 windows 机器的 `C:\Windows\fonts` 目录下的全部文件拷贝到生产服务器字体安装目录下，然后执行以下命令更新字体缓存。
 
 ```bash
 # 查看linux目前的所有字体
