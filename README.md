@@ -172,14 +172,15 @@ import com.alibaba.fastjson.JSON;
 import com.cxhello.example.entity.StandardReportData;
 import com.cxhello.example.util.PdfUtil;
 import com.cxhello.example.util.WordUtil;
-import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -192,8 +193,10 @@ import java.util.Map;
 @Controller
 public class ExportController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExportController.class);
+
     @GetMapping("/exportPdf")
-    public void exportPdf(HttpServletResponse response) throws IOException {
+    public void exportPdf(HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>();
         String waterName = "测试水厂";
         map.put("waterName", waterName);
@@ -201,15 +204,62 @@ public class ExportController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = simpleDateFormat.format(new Date());
         map.put("date", date);
-        File jsonFile = ResourceUtils.getFile("classpath:test.json");
-        String json = FileUtils.readFileToString(jsonFile, "UTF-8");
-        StandardReportData standardReportData = JSON.parseObject(json, StandardReportData.class);
-        map.put("standardReportData", standardReportData);
-        File file = WordUtil.generateWord("template.ftl", map);
-        PdfUtil.covertDocToPdf(file, waterName + "标准报告", response);
+        Resource resource = new ClassPathResource("test.json");
+        InputStream is = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            is = resource.getInputStream();
+            inputStreamReader = new InputStreamReader(is);
+            bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder str = new StringBuilder();
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                str.append(s);
+            }
+            StandardReportData standardReportData = JSON.parseObject(str.toString(), StandardReportData.class);
+            map.put("standardReportData", standardReportData);
+            File file = WordUtil.generateWord("template.ftl", map);
+            PdfUtil.covertDocToPdfSecond(file, waterName + "标准报告", response);
+        } catch (IOException e) {
+            logger.error("System error", e);
+        } finally {
+            try {
+                is.close();
+                inputStreamReader.close();
+                bufferedReader.close();
+            } catch (IOException e) {
+                logger.error("System error", e);
+            }
+        }
     }
 
 }
+```
+
+### Linux导出中文乱码问题
+
+在 Linux 服务器使用 aspose.word 转换 word 文件为 pdf 的时候显示中文乱码，但是在 windows 服务器上使用可以正常转换。通过查资料分析后确认是由于 Linux 服务器缺少对应的字库导致文件转换出现乱码的。
+
+安装字库，将 windows 机器的 `c:\Windows\fonts` 目录下的全部文件拷贝到生产服务器字体安装目录下，然后执行以下命令更新字体缓存。
+
+```bash
+# 查看linux目前的所有字体
+fc-list
+# 查看Linux目前的所有中文字体
+fc-list :lang=zh
+# 拷贝到linux下的字体目录
+mkdir /usr/share/fonts/windows
+cp /local/src/fonts/* /usr/share/fonts/windows
+# 执行安装字体命令
+cd /usr/share/fonts
+sudo mkfontscale
+sudo mkfontdir 
+sudo fc-cache -fv
+# 执行命令让字体生效
+source /etc/profile
+# 如果安装失败，可以考虑修改字体权限
+chmod 755 *.ttf
 ```
 
 ### 代码地址
@@ -227,3 +277,5 @@ public class ExportController {
 > https://cloud.tencent.com/developer/article/1639923
 
 > https://www.jianshu.com/p/86716c7122ef
+
+> https://www.cnblogs.com/stsinghua/p/13558544.html

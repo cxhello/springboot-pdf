@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.cxhello.example.entity.StandardReportData;
 import com.cxhello.example.util.PdfUtil;
 import com.cxhello.example.util.WordUtil;
-import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,8 +25,10 @@ import java.util.Map;
 @Controller
 public class ExportController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExportController.class);
+
     @GetMapping("/exportPdf")
-    public void exportPdf(HttpServletResponse response) throws IOException {
+    public void exportPdf(HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>();
         String waterName = "测试水厂";
         map.put("waterName", waterName);
@@ -33,12 +36,34 @@ public class ExportController {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = simpleDateFormat.format(new Date());
         map.put("date", date);
-        File jsonFile = ResourceUtils.getFile("classpath:test.json");
-        String json = FileUtils.readFileToString(jsonFile, "UTF-8");
-        StandardReportData standardReportData = JSON.parseObject(json, StandardReportData.class);
-        map.put("standardReportData", standardReportData);
-        File file = WordUtil.generateWord("template.ftl", map);
-        PdfUtil.covertDocToPdfSecond(file, waterName + "标准报告", response);
+        Resource resource = new ClassPathResource("test.json");
+        InputStream is = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            is = resource.getInputStream();
+            inputStreamReader = new InputStreamReader(is);
+            bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder str = new StringBuilder();
+            String s;
+            while ((s = bufferedReader.readLine()) != null) {
+                str.append(s);
+            }
+            StandardReportData standardReportData = JSON.parseObject(str.toString(), StandardReportData.class);
+            map.put("standardReportData", standardReportData);
+            File file = WordUtil.generateWord("template.ftl", map);
+            PdfUtil.covertDocToPdfSecond(file, waterName + "标准报告", response);
+        } catch (IOException e) {
+            logger.error("System error", e);
+        } finally {
+            try {
+                is.close();
+                inputStreamReader.close();
+                bufferedReader.close();
+            } catch (IOException e) {
+                logger.error("System error", e);
+            }
+        }
     }
 
 }
